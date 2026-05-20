@@ -355,15 +355,6 @@ const App: React.FC = () => {
             Taxon <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">Profiles</span>
           </h1>
           <div className="flex items-center gap-2 print:hidden">
-            <div className="tooltip-container">
-              <button className="text-slate-500 hover:text-cyan-400 transition-colors">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              </button>
-              <div className="tooltip-text">
-                <p className="font-bold mb-1">What is this?</p>
-                A research-oriented identification tool. It uses AI to pull diagnostic data from taxonomic literature. Always verify critical IDs with primary dichotomous keys or specimen comparison.
-              </div>
-            </div>
             {!hasSelectedKey && (
               <button 
                 onClick={handleOpenSelectKey}
@@ -418,8 +409,17 @@ const App: React.FC = () => {
                  onChange={(e) => setLocality(e.target.value)}
                  onKeyDown={handleKeyDown}
                  placeholder="Locality (Optional, e.g., 'California', 'UK')"
-                 className="w-full bg-slate-950/30 border border-slate-800/30 rounded-2xl py-3 pl-12 pr-4 text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all"
+                 className="w-full bg-slate-950/30 border border-slate-800/30 rounded-2xl py-3 pl-12 pr-10 text-white text-sm placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all"
                />
+               {locality && (
+                 <button
+                   onClick={() => setLocality('')}
+                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                   title="Clear locality"
+                 >
+                   <XIcon className="w-4 h-4" />
+                 </button>
+               )}
             </div>
 
             <button
@@ -700,7 +700,7 @@ const App: React.FC = () => {
       )}
 
       <footer className="relative mt-24 max-w-6xl mx-auto px-4 text-center py-10 border-t border-slate-800/30 print:hidden">
-        <p className="text-slate-500 text-base md:text-sm mb-3">Developed by Daniel Cahen - Powered by Gemini 3 Flash with Search Grounding</p>
+        <p className="text-slate-500 text-base md:text-sm mb-3">Developed by Daniel Cahen - Powered by Gemini 3.5 Flash with Search Grounding</p>
         <p className="text-slate-600 text-sm md:text-xs">AI-generated content. For critical research, verify with authoritative literature.</p>
       </footer>
 

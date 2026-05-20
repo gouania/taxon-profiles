@@ -182,7 +182,14 @@ const handleApiError = (error: any) => {
 
 export const analyzeTaxon = async (taxonName: string, locality?: string, useSearch: boolean = true): Promise<TaxonData> => {
   try {
-    const ai = new GoogleGenAI({ apiKey: getApiKey() });
+    const ai = new GoogleGenAI({ 
+      apiKey: getApiKey(),
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
 
     const prompt = `Taxonomist mode. Analyze: "${taxonName}"${locality ? ` within the locality/geographic context of "${locality}"` : ""}. 
 Search for precise diagnostic morphology and verified classification.
@@ -199,7 +206,7 @@ STRICT STRUCTURAL RULES:
 5. 'fieldNotes', 'hazards', 'conservationStatus', 'seasonality', 'humanRelevance': Provide concise context. Map plant traits (sap, smell) or animal traits (calls, behavior) to 'fieldNotes'. Synonyms should capture major recent nomenclatural changes.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3.5-flash",
       contents: prompt,
       config: {
         tools: useSearch ? [{ googleSearch: {} }] : undefined,
@@ -226,7 +233,14 @@ STRICT STRUCTURAL RULES:
 
 export const compareTaxa = async (names: string[], locality?: string, useSearch: boolean = true): Promise<ComparisonData> => {
   try {
-    const ai = new GoogleGenAI({ apiKey: getApiKey() });
+    const ai = new GoogleGenAI({ 
+      apiKey: getApiKey(),
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
     const count = names.length;
 
     const taxonProperties: any = {};
@@ -278,7 +292,7 @@ STRICT LIST FORMATTING:
 - Under 'includedTaxaCount', specify the global number of accepted included taxa for that taxon, and 'localIncludedTaxaCount' for the number within the locality if provided.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3.5-flash",
       contents: prompt,
       config: {
         tools: useSearch ? [{ googleSearch: {} }] : undefined,

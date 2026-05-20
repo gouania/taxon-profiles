@@ -1,5 +1,6 @@
 {
   "name": "Taxon Profiles",
   "description": "An AI-powered biological identification assistant focusing on diagnostic morphological characters, etymology, and ecology.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
