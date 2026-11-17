@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Taxon Profiles</title>
+    <meta name="description" content="A biological identification assistant focusing on diagnostic morphological characters, etymology, and ecology." />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -30,6 +31,7 @@
         color: #f1f5f9; /* Slate 100 */
         font-size: 16px;
         line-height: 1.6;
+        overflow-x: hidden;
       }
       h1, h2, h3, .font-display {
         font-family: 'Outfit', sans-serif;
@@ -38,6 +40,7 @@
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 8px;
+        height: 8px;
       }
       ::-webkit-scrollbar-track {
         background: #0f172a;
@@ -54,6 +57,7 @@
       .prose-custom {
         font-size: 1.0625rem; /* ~17px for better readability */
         color: #cbd5e1; /* Slate 300 */
+        overflow-wrap: anywhere;
       }
       .prose-custom p {
         margin-bottom: 1.25rem;
@@ -62,13 +66,13 @@
       .prose-custom p:last-child {
         margin-bottom: 0;
       }
-      
+
       /* Internal bolding */
       .prose-custom strong {
         color: #f8fafc; /* Slate 50 */
         font-weight: 600;
       }
-      
+
       /* Feature Labels (Habit, Leaves, etc.) */
       .prose-custom li > strong:first-child {
         color: #22d3ee; /* Cyan 400 */
@@ -87,16 +91,24 @@
         margin-bottom: 1.25rem;
         padding-left: 0;
       }
+      .prose-custom ol {
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
+        padding-left: 1.5rem;
+      }
       .prose-custom li {
         position: relative;
         padding-left: 1.75rem;
         margin-bottom: 1rem;
         line-height: 1.7;
       }
+      .prose-custom ol > li {
+        padding-left: 0.25rem;
+      }
       .prose-custom li:last-child {
         margin-bottom: 0;
       }
-      .prose-custom li::before {
+      .prose-custom ul > li::before {
         content: "";
         position: absolute;
         left: 0.25rem;
@@ -106,6 +118,14 @@
         background-color: #22d3ee; /* cyan-400 */
         border-radius: 50%;
         opacity: 0.4;
+      }
+      .prose-custom a {
+        color: #22d3ee;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .prose-custom a:hover {
+        color: #67e8f9;
       }
       .prose-custom h3 {
         font-family: 'Outfit', sans-serif;
@@ -127,8 +147,18 @@
         z-index: 10;
         background-color: #0f172a;
         border-right: 1px solid rgba(51, 65, 85, 0.5);
+        min-width: 112px;
+        max-width: 136px;
       }
-      
+
+      @media (min-width: 640px) {
+        .comparison-table th.sticky-col,
+        .comparison-table td.sticky-col {
+          min-width: 160px;
+          max-width: 240px;
+        }
+      }
+
       .comparison-table th {
         background-color: #0f172a;
         z-index: 20;
@@ -138,34 +168,16 @@
         background-color: rgba(30, 41, 59, 0.4); /* Slate 800/40 */
       }
 
-      /* Tooltip Styles */
-      .tooltip-container {
-        position: relative;
-        display: inline-block;
-      }
-      .tooltip-text {
-        visibility: hidden;
-        width: 240px;
-        background-color: #1e293b;
-        color: #f1f5f9;
-        text-align: left;
-        border-radius: 8px;
-        padding: 12px;
-        position: absolute;
-        z-index: 50;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -120px;
-        opacity: 0;
-        transition: opacity 0.3s;
-        border: 1px solid #334155;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        font-size: 0.75rem;
-        line-height: 1.4;
-      }
-      .tooltip-container:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
+      /* Respect Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto !important;
+        }
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
 
       /* Print Styles */
@@ -173,76 +185,107 @@
         *, *::before, *::after {
           background-color: transparent !important;
           background-image: none !important;
-          color: black !important;
+          color: #111827 !important;
           box-shadow: none !important;
           text-shadow: none !important;
         }
 
+        @page {
+          margin: 14mm;
+        }
+
         body {
           background-color: white !important;
-          color: black !important;
+          color: #111827 !important;
+          font-size: 11pt !important;
+          line-height: 1.5 !important;
           print-color-adjust: exact;
           -webkit-print-color-adjust: exact;
         }
 
-        header button, 
+        .prose-custom {
+          font-size: 10.5pt !important;
+          color: #111827 !important;
+        }
+
+        .prose-custom p, .prose-custom li {
+          line-height: 1.5 !important;
+          margin-bottom: 0.6rem !important;
+        }
+
+        header button,
         header input,
+        header form,
         .print\:hidden {
           display: none !important;
         }
-        
+
         header {
           padding-top: 0 !important;
-          padding-bottom: 20px !important;
-          margin-bottom: 20px !important;
+          padding-bottom: 12px !important;
+          margin-bottom: 12px !important;
         }
+
         main {
           max-width: 100% !important;
           padding: 0 !important;
           margin: 0 !important;
         }
-        
-        .border, .border-slate-800, .border-slate-800\/50, .rounded-xl, .rounded-2xl {
-          border: 1px solid #ccc !important;
-          border-radius: 4px !important;
+
+        .border, .border-slate-800, .border-slate-800\/50, .rounded-xl, .rounded-2xl, .rounded-3xl {
+          border: 1px solid #cbd5e1 !important;
+          border-radius: 6px !important;
         }
-        
-        .text-cyan-400, .text-cyan-500, .text-slate-300, .text-slate-400, .text-slate-500, .text-orange-200, .text-orange-300 {
-          color: black !important;
+
+        .text-cyan-400, .text-cyan-500, .text-cyan-300, .text-slate-300, .text-slate-400, .text-slate-500, .text-orange-200, .text-orange-300, .text-orange-400 {
+          color: #111827 !important;
         }
 
         .prose-custom strong, .prose-custom li::before {
-            color: black !important;
-            font-weight: 700;
+          color: #111827 !important;
+          font-weight: 700 !important;
         }
-        
+
+        .prose-custom ul > li::before {
+          background-color: #111827 !important;
+          opacity: 0.7 !important;
+        }
+
         a {
-          text-decoration: underline;
-          color: black !important;
+          text-decoration: underline !important;
+          color: #111827 !important;
         }
-        
-        table, th, td {
-          border: 1px solid #ccc !important;
+
+        /* Ensure comparison table columns are never clipped in Print/PDF */
+        .comparison-table {
+          overflow: visible !important;
         }
-        
-        h2, h3, .rounded-xl {
+
+        .comparison-table table {
+          min-width: 0 !important;
+          width: 100% !important;
+          table-layout: fixed !important;
+          font-size: 9.5pt !important;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          position: static !important;
+          min-width: 0 !important;
+          max-width: none !important;
+          padding: 8px !important;
+          word-break: break-word !important;
+          overflow-wrap: anywhere !important;
+          border: 1px solid #cbd5e1 !important;
+        }
+
+        h2, h3, section, tr, .rounded-xl {
+          break-inside: avoid;
           page-break-inside: avoid;
         }
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "marked": "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
